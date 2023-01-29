@@ -31,59 +31,50 @@ class User:
             self.orientation = self.__changeOrientation()
             return
         else:
-            dist = int(self.speed * static.time / 10)  # 每次移动的格子数
+            for _ in range(int(static.time/10)):
+                dist = int(self.speed)  # 每次移动的格子数
 
-            if self.orientation == "left":
-                # 是否超出边界
-                temp = self.location[1] - dist
-                # 不超出则移动
-                if temp > 0:
-                    self.location = [self.location[0], temp]
+                if self.orientation == "left":
+                    # 是否超出边界
+                    temp = self.location[1] - dist
+                    # 不超出则移动
+                    if temp > 0:
+                        self.location = [self.location[0], temp]
+                        # 超出则改变方向
+                    else:
+                        self.orientation = self.__changeOrientation()
+                if self.orientation == "right":
+                    # 是否超出边界
+                    temp = self.location[1] + dist
+                    # 不超出则移动
+                    if temp <= static.mapSize:
+                        self.location = [self.location[0], temp]
                     # 超出则改变方向
-                else:
-                    self.orientation = self.__changeOrientation()
-            if self.orientation == "right":
-                # 是否超出边界
-                temp = self.location[1] + dist
-                # 不超出则移动
-                if temp <= static.mapSize:
-                    self.location = [self.location[0], temp]
-                # 超出则改变方向
-                else:
-                    self.orientation = self.__changeOrientation()
-            if self.orientation == "up":
-                # 是否超出边界
-                temp = self.location[0] - dist
-                # 不超出则移动
-                if temp > 0:
-                    self.location = [temp, self.location[1]]
-                # 超出则改变方向
-                else:
-                    self.orientation = self.__changeOrientation()
-            if self.orientation == "down":
-                # 是否超出边界
-                temp = self.location[0] + dist
-                # 不超出则移动
-                if temp < 1000:
-                    self.location = [temp, self.location[1]]
-                # 超出则改变方向
-                else:
-                    self.orientation = self.__changeOrientation()
-            # print("User{},Orientation:{},location:{}".format(self.uid, self.orientation, self.location))
-            # 每次移动结束之后，有一定概率改变前进方向
-            self.orientation = self.__randomChangeOrientation()
+                    else:
+                        self.orientation = self.__changeOrientation()
+                if self.orientation == "up":
+                    # 是否超出边界
+                    temp = self.location[0] - dist
+                    # 不超出则移动
+                    if temp > 0:
+                        self.location = [temp, self.location[1]]
+                    # 超出则改变方向
+                    else:
+                        self.orientation = self.__changeOrientation()
+                if self.orientation == "down":
+                    # 是否超出边界
+                    temp = self.location[0] + dist
+                    # 不超出则移动
+                    if temp < 1000:
+                        self.location = [temp, self.location[1]]
+                    # 超出则改变方向
+                    else:
+                        self.orientation = self.__changeOrientation()
+                # print("User{},Orientation:{},location:{}".format(self.uid, self.orientation, self.location))
+            # 每次移动结束之后，随机改变前进方向
+            self.orientation = self.__changeOrientation()
 
     def __changeOrientation(self):
         return np.random.choice(["left", "right", "up", "down", "none"], p=static.oriPoss)
 
-    def __randomChangeOrientation(self):
-        ifChange = np.random.choice([True, False], p=static.changeOriPoss)
-        if ifChange:
-            newOri = self.__changeOrientation()
-            if newOri == self.orientation:
-                return self.__randomChangeOrientation()
-            else:
-                # print("Orientation Changed:{}".format(newOri))
-                return newOri
-        else:
-            return self.orientation
+

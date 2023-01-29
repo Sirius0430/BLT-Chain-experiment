@@ -20,7 +20,9 @@ def iterate(uid, location, map, creditRate, depth,time):
         creditRate = 1
         selectedUser = np.random.choice(BTConnection, size=static.userPerIter, replace=False)
     for u in selectedUser:
-        readObj("../mapAnalog/map/map{}".format(time))
+        record = readObj("../mapAnalog/map/map{}.pkl".format(time+1))
+        user = record.userList[u-1]
+        print()
 
 
 def findBTConnection(uid, location, map):
