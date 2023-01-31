@@ -10,30 +10,40 @@ import pickle
 # 基本思路:利用圆的中心对称，只计算四分之一个圆
 def findCircle(r, c):  # r=radius,c=center
     c = np.array(c)
+    xmin = max(0, int(c[0] - r))
+    xmax = min(1000, int(c[0] + r))
+    ymin = max(0, int(c[1] - r))
+    ymax = min(1000, int(c[1] + r))
     res = []  # 在范围内的点
-    for x in range(0, r + 1):
-        for y in range(0, r + 1):
-            if sqrt(x ** 2 + y ** 2) <= r:
-                points = np.array([[x, y], [-x, y], [x, -y], [-x, -y]])  # 判定在圆内的点
-                points = np.unique(points, axis=0)  # 数组去重
-                res.extend(points)
-    c_reshaped = c.reshape(1, 2)
-    c_reshaped = np.repeat(c_reshaped, len(res), axis=0)
-    return res + c_reshaped
+    for x in range(xmin, xmax + 1):
+        for y in range(ymin, ymax + 1):
+            if sqrt((x-c[0]) ** 2 + (y-c[1]) ** 2) <= r:
+                res.extend([[x, y]])
+    return res
 
 
 def findEllipse(a, c1, c2):
-    center = (c1 + c2) / 2
+    center = (np.array(c1) + np.array(c2)) / 2
     res = []  # 在范围内的点
-    for x in range(0, a + 1):
-        for y in range(0, b + 1):
-            if sqrt((x - c) ** 2 + y ** 2) + <= r:
-                points = np.array([[x, y], [-x, y], [x, -y], [-x, -y]])  # 判定在圆内的点
-                points = np.unique(points, axis=0)  # 数组去重
-                res.extend(points)
-    center_reshaped = center.reshape(1, 2)
-    center_reshaped = np.repeat(center_reshaped, len(res), axis=0)
-    return []
+    x1 = c1[0]
+    y1 = c1[1]
+    x2 = c2[0]
+    y2 = c2[1]
+    xf = -abs(x1 - x2) / 2
+    yf = abs(y1 - y2) / 2
+    x0 = center[0]
+    y0 = center[1]
+    if 2 * a <= sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2):
+        assert "椭圆a>c"
+    xmax = min(1000, int(sqrt(a ** 2 - yf ** 2) + x0))
+    xmin = max(0, int(-sqrt(a ** 2 - yf ** 2) + x0))
+    ymax = min(1000, int(sqrt(a ** 2 - xf ** 2) + y0))
+    ymin = max(0, int(-sqrt(a ** 2 - xf ** 2) + y0))
+    for x in range(xmin, xmax + 1):
+        for y in range(ymin, ymax + 1):
+            if (sqrt((x - x1) ** 2 + (y - y1) ** 2) + sqrt((x - x2) ** 2 + (y - y2) ** 2)) <= 2 * a:
+                res.extend([[x, y]])
+    return res
 
 
 def readObj(path):
@@ -41,3 +51,11 @@ def readObj(path):
     f = open(path, "rb")
     record = pickle.load(f)
     return record
+
+
+if __name__ == '__main__':
+    test = findCircle(4, [1, 2])
+    res = np.zeros([10, 10])
+    for i in test:
+        res[i[0], i[1]] += 1
+    print()

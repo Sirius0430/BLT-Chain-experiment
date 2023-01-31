@@ -24,3 +24,5 @@ userNum = 1000  # 用户数量
 interval = 300  # 找人的间隔（单位s）
 bluetoothDistance = 500  # 蓝牙连接距离
 userPerIter = 7  # 每轮循环的验证人数
+
+test = 0
