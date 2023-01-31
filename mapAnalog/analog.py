@@ -13,6 +13,6 @@ if __name__ == '__main__':
         m.forward()
         obj = pickle.dumps(MapRecord(m.records[-1], m.userList))
         with open("map/map{}.pkl".format(i), "wb") as f:
-            f.write(obj0)
+            f.write(obj)
         print("map{} done".format(i))
 
