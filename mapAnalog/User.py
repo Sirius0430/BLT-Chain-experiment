@@ -19,11 +19,11 @@ class User:
 
     # 随机生成起始位置(根据概率分布）
     def __randomChooseStartLocation(self, data):
-        index = np.arange(1000 * 1000 + 1)[1:]
+        index = np.arange(static.mapSize * static.mapSize + 1)[1:]
         res = np.random.choice(index, p=data.flatten().ravel())
         # +1是为了将数组起始位置改为1
-        x = int(res / 1000) + 1
-        y = res % 1000 + 1
+        x = int(res / static.mapSize) + 1
+        y = res % static.mapSize + 1
         return [x, y]
 
     def move(self):
@@ -65,7 +65,7 @@ class User:
                     # 是否超出边界
                     temp = self.location[0] + dist
                     # 不超出则移动
-                    if temp < 1000:
+                    if temp < static.mapSize:
                         self.location = [temp, self.location[1]]
                     # 超出则改变方向
                     else:

@@ -8,12 +8,15 @@ import pickle
 
 # 给半径，确定圆的范围
 # 基本思路:利用圆的中心对称，只计算四分之一个圆
+import static
+
+
 def findCircle(r, c):  # r=radius,c=center
     c = np.array(c)
     xmin = max(0, int(c[0] - r))
-    xmax = min(1000, int(c[0] + r))
+    xmax = min(static.mapSize, int(c[0] + r))
     ymin = max(0, int(c[1] - r))
-    ymax = min(1000, int(c[1] + r))
+    ymax = min(static.mapSize, int(c[1] + r))
     res = []  # 在范围内的点
     for x in range(xmin, xmax + 1):
         for y in range(ymin, ymax + 1):
@@ -35,9 +38,9 @@ def findEllipse(a, c1, c2):
     y0 = center[1]
     if 2 * a <= sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2):
         assert "椭圆a>c"
-    xmax = min(1000, int(sqrt(a ** 2 - yf ** 2) + x0))
+    xmax = min(static.mapSize, int(sqrt(a ** 2 - yf ** 2) + x0))
     xmin = max(0, int(-sqrt(a ** 2 - yf ** 2) + x0))
-    ymax = min(1000, int(sqrt(a ** 2 - xf ** 2) + y0))
+    ymax = min(static.mapSize, int(sqrt(a ** 2 - xf ** 2) + y0))
     ymin = max(0, int(-sqrt(a ** 2 - xf ** 2) + y0))
     for x in range(xmin, xmax + 1):
         for y in range(ymin, ymax + 1):
