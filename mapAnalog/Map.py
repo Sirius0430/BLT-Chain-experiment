@@ -1,7 +1,7 @@
 import numpy as np
 from User import User
 import static
-
+from collections import Counter
 class Map:
     size = static.mapSize #地图大小
     userNum = static.userNum   #用户数量
@@ -41,6 +41,8 @@ class MapRecord:
     def __init__(self, map, userList):
         self.map = map
         self.userList = userList
+
+
 
 
 

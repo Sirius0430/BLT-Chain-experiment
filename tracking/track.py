@@ -1,4 +1,5 @@
 import time
+import gc
 
 import numpy as np
 import pickle
@@ -8,7 +9,7 @@ import static
 from TrackUtils import *
 
 
-def iterate(uid,creditRate,depth,time):
+def iterate(uid, creditRate, depth, time):
     # uid = args[0]
     # creditRate = args[1]
     # depth = args[2]
@@ -27,28 +28,43 @@ def iterate(uid,creditRate,depth,time):
         selectedUser = BTConnection
     else:
         selectedUser = np.random.choice(BTConnection, size=static.userPerIter, replace=False)
-    UCircle = findCircle(int(static.bluetoothDistance / 10), user.location)  # 被证明者的蓝牙连接
 
+    del Umap
+    del UuserLisr
+    del BTConnection
+    gc.collect()
+
+    UCircle = findCircle(int(static.bluetoothDistance / 10), user.location)  # 被证明者的蓝牙连接
     for s in selectedUser:
-        SRecordPre = readObj("../mapAnalog/map/map{}.pkl".format(time - 1))  # 证明者前一个位置
+        SRecordPre = readObj("../mapAnalog/map/map{}.pkl".format(time - static.interval))  # 证明者前一个位置
         SUserPre = SRecordPre.userList[s - 1]
-        SRecordBack = readObj("../mapAnalog/map/map{}.pkl".format(time + 1))  # 证明者后一个位置
+        SRecordBack = readObj("../mapAnalog/map/map{}.pkl".format(time + static.interval))  # 证明者后一个位置
         SUserBack = SRecordBack.userList[s - 1]
-        SEllipse = findEllipse(int(SUserPre.speed * static.time * 2 / 10), SUserBack.location,
+        SEllipse = findEllipse(int(SUserPre.speed * static.time * 2 * static.interval / 10), SUserBack.location,
                                SUserPre.location)  # 证明者的运动范围
         if len(np.intersect1d(UCircle, SEllipse)) > 0:  # 判断运动范围是否有交集
             creditRate += 1
         else:
             creditRate = 0
             assert "蓝牙连接失败"
+        del SRecordPre
+        del SUserPre
+        del SRecordBack
+        del SUserBack
+        del SEllipse
+        gc.collect()
     creditRate /= static.userPerIter
 
     resCR = 0  # 最终CreditRate
     for u in selectedUser:
-        resCR += iterate(u, creditRate, depth, time - 1)
-    resCR /= len(selectedUser)
+        resCR += iterate(u, creditRate, depth, time - static.interval)
+    if len(selectedUser) == 0:
+        resCR = 0
+    else:
+        resCR /= len(selectedUser)
 
-    print("uid:{} done!".format(uid))
+    # print("uid:{} CR:{}".format(uid,resCR))
+
     return resCR
 
 
@@ -61,28 +77,30 @@ def findBTConnection(uid, location, map):
     return BTConnection
 
 
-def mpStarter(args):
-    uid = args[0]
-    creditRate = args[1]
-    depth = args[2]
-    startTime = args[3]
-    # return iterate(uid, creditRate, depth, time=startTime)
+def callBack(res):
+    CRres.append(res)
+    print("uid:{},CR:{}".format(i, res))
+
+
+def errCallBack(err):
+    print("ERROR! {}".format(err))
+7
+
 
 if __name__ == '__main__':
-    startTime = 50
-    uid = 500
     time1 = time.perf_counter()
 
-    userList = np.random.choice(np.arange(1,static.userNum+1),size=100,replace=False)
+    userList = np.random.choice(np.arange(1, static.userNum + 1), size=20, replace=False)
     pool = multiprocessing.Pool(static.cpu)
     CRres = []
     for i in userList:
-        startTime = np.random.choice(np.arange(5,96))
-        res = pool.apply_async(func=iterate,args=(i,1,3,startTime))
-        CRres.append(res.get())
+        startTime = np.random.choice(np.arange(25, 75))
+        pool.apply_async(func=iterate, args=(i, 1, 0, startTime), callback=callBack, error_callback=errCallBack)
+        # CRres.append(res.get())
     pool.close()
     pool.join()
-    print(np.mean(CRres))
+    print("final res:{}".format(np.mean(CRres)))
     # iterate(uid, 1, 0, time=startTime)
     time2 = time.perf_counter()
-    print(time2 - time1)
+    print("time:{}".format(time2 - time1))
+    np.save("Res/move/res0.2.npy", CRres)

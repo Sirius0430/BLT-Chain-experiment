@@ -14,17 +14,20 @@ class User:
         self.uid = pid
         self.location = self.__randomChooseStartLocation(np.load("../data/PopDistribution.npy"))  # 人口分布密度，用于随机生成用户)
         self.credit = credit
-        self.speed = np.random.choice(static.speed)
+        self.speed = np.random.choice(static.speed,p=static.speedPoss)
         # print("User{} created,Orientation:{},speed:{},location:{}".format(self.uid, self.orientation, self.speed,self.location))
 
     # 随机生成起始位置(根据概率分布）
     def __randomChooseStartLocation(self, data):
-        index = np.arange(static.mapSize * static.mapSize + 1)[1:]
+        index = np.arange(100 * 100)
         res = np.random.choice(index, p=data.flatten().ravel())
+        #由于每100格相同，因此先选取十位，再选取各位
+        x = int(res / 100)
+        y = res % 100
+        xAdd = np.random.choice(np.arange(0,10))
+        yAdd = np.random.choice(np.arange(0,10))
         # +1是为了将数组起始位置改为1
-        x = int(res / static.mapSize) + 1
-        y = res % static.mapSize + 1
-        return [x, y]
+        return [10*x+xAdd+1, 10*y+yAdd+1]
 
     def move(self):
         if self.orientation == "none":
