@@ -13,8 +13,7 @@ class User:
     def __init__(self, pid):
         self.uid = pid
         self.location = self.__randomChooseStartLocation(np.load("../data/PopDistribution.npy"))  # 人口分布密度，用于随机生成用户)
-        self.credit = np.random.choice([True,False])
-        # self.speed = np.random.choice(static.speed,p=static.speedPoss)
+        self.credit = np.random.choice([True,False],p=static.creditPoss)
         self.speed = np.random.choice(static.speed)
         # print("User{} created,Orientation:{},speed:{},location:{}".format(self.uid, self.orientation, self.speed,self.location))
 

@@ -20,6 +20,7 @@ oriPoss = [0.2, 0.2, 0.2, 0.2, 0.2]  # 选择前进方向时的可能性
 time = 60  # 每次迭代的间隔时间（单位s）
 mapSize = 1000  # 地图大小
 userNum = 100000  # 用户数量
+creditPoss=[1,0]    #真实用户与作弊用户分布
 
 interval = 5  # 找人的间隔（几个time）
 bluetoothDistance = 50  # 蓝牙连接距离

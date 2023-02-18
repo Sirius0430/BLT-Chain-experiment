@@ -8,6 +8,6 @@ creditPoss=[1,0]    #真实用户与作弊用户分布
 
 interval = 5  # 找人的间隔（几个time）
 bluetoothDistance = 50  # 蓝牙连接距离
-userPerIter = 5  # 每轮循环的验证人数
+userPerIter = 3  # 每轮循环的验证人数
 
 cpu = 16  # 线程数
