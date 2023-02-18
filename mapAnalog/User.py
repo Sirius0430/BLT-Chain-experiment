@@ -10,11 +10,12 @@ class User:
     speed = 0  # 移动速度
     orientation = "none"  # 当前行进的方向
 
-    def __init__(self, pid, credit=True):
+    def __init__(self, pid):
         self.uid = pid
         self.location = self.__randomChooseStartLocation(np.load("../data/PopDistribution.npy"))  # 人口分布密度，用于随机生成用户)
-        self.credit = credit
-        self.speed = np.random.choice(static.speed,p=static.speedPoss)
+        self.credit = np.random.choice([True,False])
+        # self.speed = np.random.choice(static.speed,p=static.speedPoss)
+        self.speed = np.random.choice(static.speed)
         # print("User{} created,Orientation:{},speed:{},location:{}".format(self.uid, self.orientation, self.speed,self.location))
 
     # 随机生成起始位置(根据概率分布）

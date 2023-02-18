@@ -25,7 +25,7 @@ def findCircle(r, c):  # r=radius,c=center
     return res
 
 
-def findEllipse(a, c1, c2):
+def findEllipse(a, c1, c2,circle):
     center = (np.array(c1) + np.array(c2)) / 2
     res = []  # 在范围内的点
     x1 = c1[0]
@@ -45,9 +45,11 @@ def findEllipse(a, c1, c2):
     for x in range(xmin, xmax + 1):
         for y in range(ymin, ymax + 1):
             if (sqrt((x - x1) ** 2 + (y - y1) ** 2) + sqrt((x - x2) ** 2 + (y - y2) ** 2)) <= 2 * a:
-                res.extend([[x, y]])
-    return res
-
+                # res.extend([[x, y]])  #删除
+                if [x,y] in circle:
+                    return True
+    # return res    #删除
+    return False
 
 def readObj(path):
     sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(path))))  # 将MapRecord定义添加到环境变量
@@ -57,8 +59,14 @@ def readObj(path):
 
 
 if __name__ == '__main__':
-    test = findCircle(4, [1, 2])
-    res = np.zeros([10, 10])
-    for i in test:
-        res[i[0], i[1]] += 1
+    circle = findCircle(5,[10,10])
+    ellipse = findEllipse(5,[10,2],[10,8],circle)
+    res = np.zeros((20,20))
+    for x in range(20):
+        for y in range(20):
+            if [x,y] in circle:
+                res[x,y]+=1
+            if [x,y] in ellipse:
+                res[x,y]+=1
     print()
+
