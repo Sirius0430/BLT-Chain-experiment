@@ -108,4 +108,4 @@ if __name__ == '__main__':
     # iterate(uid, 1, 0, time=startTime)
     time2 = time.perf_counter()
     print("time:{}".format(time2 - time1))
-    # np.save("Res/density-5/res100000.npy", CRres)
+    np.save("Res/density-5/res100000.npy", CRres)
