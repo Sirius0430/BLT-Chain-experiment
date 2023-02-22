@@ -107,5 +107,6 @@ if __name__ == '__main__':
     print("final res:{}".format(np.mean(CRres)))
     # iterate(uid, 1, 0, time=startTime)
     time2 = time.perf_counter()
+
     print("time:{}".format(time2 - time1))
-    np.save("Res/density-5/res100000.npy", CRres)
+    np.save("Res/density-{}/res{}.npy".format(static.userPerIter,static.userNum), CRres)
