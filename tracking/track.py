@@ -22,8 +22,8 @@ def iterate(uid, creditRate, depth, time):
         return creditRate
     depth += 1
     Umap = readObj("../mapAnalog/map/map{}.pkl".format(time)).map  # 证明者所处时刻的地图
-    UuserLisr = readObj("../mapAnalog/map/map{}.pkl".format(time)).userList  # 证明者所处时刻的用户列表
-    user = UuserLisr[uid - 1]
+    UuserList = readObj("../mapAnalog/map/map{}.pkl".format(time)).userList  # 证明者所处时刻的用户列表
+    user = UuserList[uid - 1]
 
     BTConnection = findBTConnection(user.uid, user.location, Umap)
     userNum = len(BTConnection)
@@ -35,7 +35,7 @@ def iterate(uid, creditRate, depth, time):
         selectedUser = np.random.choice(BTConnection, size=static.userPerIter, replace=False)
 
     del Umap
-    del UuserLisr
+    del UuserList
     del BTConnection
     gc.collect()
 
@@ -77,6 +77,97 @@ def iterate(uid, creditRate, depth, time):
     return resCR
 
 
+def iterate2(uid, depth, time):  # 计算51%攻击成功率
+    # uid = args[0]
+    # creditRate = args[1]
+    # depth = args[2]
+    # time = args[3]
+    Umap = readObj("../mapAnalog/map/map{}.pkl".format(time)).map  # 证明者所处时刻的地图
+    UuserList = readObj("../mapAnalog/map/map{}.pkl".format(time)).userList  # 证明者所处时刻的用户列表
+    user = UuserList[uid - 1]
+    if depth == 4:
+        return user.credit
+    depth += 1
+
+    BTConnection = findBTConnection(user.uid, user.location, Umap)
+    userNum = len(BTConnection)
+    selectedUser = []
+    if userNum < static.userPerIter:
+        selectedUser = BTConnection
+    else:
+        selectedUser = np.random.choice(BTConnection, size=static.userPerIter, replace=False)
+
+    # del Umap
+    del BTConnection
+    gc.collect()
+
+    sCreditIndex = 0  # 可信用户计数
+    sCreditDict = {}  # 记录每个用户是否可信
+    for s in selectedUser:
+        sUser = UuserList[s - 1]
+        sCredit = iterate2(s,depth,time)
+        if sCredit == "True":
+            sCreditIndex += 1
+            sCreditDict[s] = "True"
+        elif sCredit == "False":
+            sCreditDict[s] = "False"
+        elif sCredit == "Detected":
+            return "Detected"
+
+    if len(selectedUser) == 0:
+        return "Detected"
+    elif len(selectedUser) == 1:
+        if bool(sCreditIndex):
+            return "True"
+        else:
+            return "False"
+    else:
+        if sCreditIndex == 0:
+            return "False"
+        if sCreditIndex == 1:
+            # 找到true，如果全部是false，返回false，否则返回detected
+            extraUID = -1   #不正常用户的uid
+            for k, v in sCreditDict.items():
+                if v == "True":
+                    extraUID = k
+            extraBTConnection = findBTConnection(extraUID, user.location, Umap)
+            extraNum = len(extraBTConnection)
+            extraSelectedUser = []
+            if extraNum < static.userPerIter:
+                extraSelectedUser = extraBTConnection
+            else:
+                extraSelectedUser = np.random.choice(extraBTConnection, size=static.userPerIter, replace=False)
+            for s in extraSelectedUser:
+                extraWitness = UuserList[s - 1]
+                if extraWitness.credit == "True":
+                    return "Detected"
+            return "False"
+
+        if sCreditIndex == len(selectedUser) - 1:
+            # 找到false，如果全部是true，返回true，否则返回detected
+            extraUID = -1  # 不正常用户的uid
+            for k, v in sCreditDict.items():
+                if v == "False":
+                    extraUID = k
+            extraBTConnection = findBTConnection(extraUID, user.location, Umap)
+            extraNum = len(extraBTConnection)
+            extraSelectedUser = []
+            if extraNum < static.userPerIter:
+                extraSelectedUser = extraBTConnection
+            else:
+                extraSelectedUser = np.random.choice(extraBTConnection, size=static.userPerIter, replace=False)
+            for s in extraSelectedUser:
+                extraWitness = UuserList[s - 1]
+                if extraWitness.credit == "False":
+                    return "Detected"
+            return "True"
+        if sCreditIndex == len(selectedUser):
+            return "True"
+        else:
+            return "Detected"
+
+
+
 def findBTConnection(uid, location, map):
     BTConnectionCircle = findCircle(int(static.bluetoothDistance / 10), location)
     BTConnection = []
@@ -90,6 +181,10 @@ def callBack(res):
     CRres.append(res)
     print("uid:{},CR:{}".format(i, res))
 
+def callBack2(res):
+    creditRes.append(res)
+    print("uid:{},res:{}".format(i, res))
+
 
 def errCallBack(err):
     print("ERROR! {}".format(err))
@@ -99,31 +194,26 @@ if __name__ == '__main__':
     time1 = time.perf_counter()
     userList = np.random.choice(np.arange(1, static.userNum + 1), size=20, replace=False)
     pool = multiprocessing.Pool(static.cpu)
-    CRres = []
+    # CR实验
+    # CRres = []
+    # for i in userList:
+    #     startTime = np.random.choice(np.arange(25, 75))
+    #     pool.apply_async(func=iterate, args=(i, 1, 0, startTime), callback=callBack, error_callback=errCallBack)
+    # pool.close()
+    # pool.join()
+    # print("final res:{}".format(np.mean(CRres)))
+    # np.save("Res/density-{}/res{}.npy".format(static.userPerIter, static.userNum), CRres)
+
+    #Credit实验
+    creditRes = []
     for i in userList:
         startTime = np.random.choice(np.arange(25, 75))
-        pool.apply_async(func=iterate, args=(i, 1, 0, startTime), callback=callBack, error_callback=errCallBack)
-        # pool.apply_async(func=iterate, args=(i, 1, 3, startTime), callback=callBack, error_callback=errCallBack)
+        pool.apply_async(func=iterate2, args=(i, 0, startTime), callback=callBack2, error_callback=errCallBack)
     pool.close()
     pool.join()
-    print("final res:{}".format(np.mean(CRres)))
+    print(creditRes)
+
     time2 = time.perf_counter()
-
+    np.save("Credit/density-{}/credit{}-{}.npy".format(static.userPerIter,static.creditPoss[0],static.creditPoss[1]), creditRes)
     print("time:{}".format(time2 - time1))
-    np.save("Res/density-{}/res{}.npy".format(static.userPerIter,static.userNum), CRres)
 
-    # 组会汇报代码
-    # startTime = time.perf_counter()
-    # threadingList = []  # 用于储存线程
-    # for i in userList:  # 创建20个线程
-    #     startTime = np.random.choice(np.arange(25, 75))  # 业务代码不用管
-    #     t = threading.Thread(target=iterate, args=(i, 1, 3, startTime))  # 创建线程，参数不用管
-    #     threadingList.append(t)  # 将线程添加到threadingList中，便于后面启动和回收
-    # for i in range(len(threadingList)):  # 启动线程
-    #     threadingList[i].start()
-    #     print("线程{}启动成功".format(i+1))
-    # for i in range(len(threadingList)):  # 等待线程结束后回收，否则线程将处于挂起状态
-    #     threadingList[i].join()
-    #     print("线程{}运行完毕成功".format(i+1))
-    # endTime = time.perf_counter()
-    # print("计算时间：{:.3f}s".format(endTime-startTime))
