@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import os.path
 import sys
 
@@ -59,14 +61,18 @@ def readObj(path):
 
 
 if __name__ == '__main__':
-    circle = findCircle(5,[10,10])
-    ellipse = findEllipse(5,[10,2],[10,8],circle)
-    res = np.zeros((20,20))
-    for x in range(20):
-        for y in range(20):
-            if [x,y] in circle:
-                res[x,y]+=1
-            if [x,y] in ellipse:
-                res[x,y]+=1
-    print()
+    # circle = findCircle(5,[10,10])
+    # ellipse = findEllipse(5,[10,2],[10,8],circle)
+    # res = np.zeros((20,20))
+    # for x in range(20):
+    #     for y in range(20):
+    #         if [x,y] in circle:
+    #             res[x,y]+=1
+    #         if [x,y] in ellipse:
+    #             res[x,y]+=1
+    # print()
+
+    a = True
+    b = False
+    print(not a^b)
 
