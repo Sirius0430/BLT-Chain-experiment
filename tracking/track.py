@@ -20,7 +20,7 @@ def iterate(uid, creditRate, depth, time):
     # creditRate = args[1]
     # depth = args[2]
     # time = args[3]
-    if depth == 4:
+    if depth == static.Nround:
         return creditRate
     depth += 1
     Umap = readObj("../mapAnalog/map/map{}.pkl".format(time)).map  # 证明者所处时刻的地图
