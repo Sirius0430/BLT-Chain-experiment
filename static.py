@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 # 一些常数
 import numpy as np
 
@@ -20,10 +22,15 @@ oriPoss = [0.2, 0.2, 0.2, 0.2, 0.2]  # 选择前进方向时的可能性
 time = 60  # 每次迭代的间隔时间（单位s）
 mapSize = 1000  # 地图大小
 userNum = 100000  # 用户数量
-creditPoss=[1,0]    #真实用户与作弊用户分布
+creditPoss = [0.9, 0.1]  # 真实用户与作弊用户分布
 
-interval = 5  # 找人的间隔（几个time）
+interval = 7  # 找人的间隔（几个time）
 bluetoothDistance = 50  # 蓝牙连接距离
-userPerIter = 6  # 每轮循环的验证人数
+userPerIter = 5  # 每轮循环的验证人数
+EXPusernum = 500  # 实验人数
+Nround = 4  # 递归轮次
+Threshold = 0.6  # 可信阈值，有多少比例的验证者认为是true才可以通过
+extraThreshold = Threshold    #extra round的阈值
 
-cpu = 11  # 线程数
+
+cpu = 8  # 线程数
