@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="PySciProjectComponent">
-<<<<<<< HEAD
-    <option name="PY_SCI_VIEW" value="true" />
-=======
->>>>>>> c52acfd4f31be5b0e184a7cfbcfdaf654917f38e
     <option name="PY_SCI_VIEW_SUGGESTED" value="true" />
   </component>
 </project>
