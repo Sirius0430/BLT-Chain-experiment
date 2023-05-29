@@ -3,35 +3,37 @@ import matplotlib.pyplot as plt
 import matplotlib
 import os
 
+
 def acc(tt, ff, sum):
-    return np.round(((tt + ff) / sum),3)
+    return np.round(((tt + ff) / sum), 3)
 
 
 def errdet(ff, tf):
-    return np.round(ff / (ff + tf),3)
+    return np.round(ff / (ff + tf), 3)
 
 
-def erravo(ff, tf):
-    return np.round(tf / (ff + tf),3)
+def erravo(ff, tf,sum):
+    return np.round(tf / sum, 3)
 
 
 def misjug(ft, tt):
-    return np.round(ft / (ft + tt),3)
+    return np.round(ft / (ft + tt), 3)
 
 
 if __name__ == '__main__':
     # i[0]:predicted i[1]:true result
     data = {}
-    for th in [0.2, 0.4, 0.6, 0.8]:
+    for th in [0.4, 0.8, 1.0]:
         basedir = "tracking/Credit/threshold-" + str(th) + "/"
-        t095 = np.load(basedir + "credit0.95-0.05.npy")
-        t090 = np.load(basedir + "credit0.9-0.1.npy")
-        t080 = np.load(basedir + "credit0.8-0.2.npy")
-        t075 = np.load(basedir + "credit0.75-0.25.npy")
-        t050 = np.load(basedir + "credit0.5-0.5.npy")
-        res = {"t095": 0, "t090": 0, "t080": 0, "t075": 0, "t050": 0}
+        t0990 = np.load(basedir + "credit0.99-0.01.npy")
+        t0975 = np.load(basedir + "credit0.975-0.025.npy")
+        t0950 = np.load(basedir + "credit0.95-0.05.npy")
+        t0900 = np.load(basedir + "credit0.9-0.1.npy")
+        t0800 = np.load(basedir + "credit0.8-0.2.npy")
+        t0500 = np.load(basedir + "credit0.5-0.5.npy")
+        res = {"t0990": 0, "t0975": 0, "t0950": 0, "t0900": 0, "t0800": 0, "t0500": 0}
 
-        for index, t in enumerate([t095, t090, t080, t075, t050]):
+        for index, t in enumerate([t0990, t0975, t0950, t0900, t0800, t0500]):
             classification = {"TT": 0, "TF": 0, "FT": 0, "FF": 0}
             for i in t:
                 if i[0] == True and i[1] == True:
@@ -56,15 +58,18 @@ if __name__ == '__main__':
             tf = v["TF"]
             ft = v["FT"]
             ff = v["FF"]
-            Acc = acc(tt, ff, tt + tf + ft + ff)
+            sum = tt + tf + ft + ff
+            Acc = acc(tt, ff, sum)
             Errdet = errdet(ff, tf)
-            Erravo = erravo(ff, tf)
+            Erravo = erravo(ff, tf,sum)
             Misjug = misjug(ft, tt)
             accList.append(Acc)
             errdetList.append(Errdet)
             erravoList.append(Erravo)
             misjugList.append(Misjug)
-            x.append(1-int(k[1:])/100)
+            x.append(1 - int(k[1:]) / 1000)
+
+        x = np.array(x).round(3)
 
         # "g" 表示红色
         plt.xscale("log")
@@ -79,6 +84,4 @@ if __name__ == '__main__':
         # 显示图例
         plt.legend(loc="lower right")
         plt.show()
-
-        print()
 
