@@ -23,7 +23,7 @@ def misjug(ft, tt):
 if __name__ == '__main__':
     # i[0]:predicted i[1]:true result
     data = {}
-    for th in [0.4, 0.8, 1.0]:
+    for th in [0.4, 0.6,0.8, 1.0]:
         basedir = "tracking/Credit/threshold-" + str(th) + "/"
         t0990 = np.load(basedir + "credit0.99-0.01.npy")
         t0975 = np.load(basedir + "credit0.975-0.025.npy")
