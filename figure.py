@@ -23,7 +23,8 @@ if __name__ == '__main__':
                             [res10000, res25000, res50000, res75000, res100000, res200000]]
         var[str(wn)] = [np.round(np.var(i), 3) for i in [res10000, res25000, res50000, res75000, res100000, res200000]]
         allPoints[str(wn)] = [np.round(i, 3) for i in [res10000, res25000, res50000, res75000, res100000, res200000]]
-    x = [100, 250, 500, 750, 1000, 2000]
+    x = np.array([100, 250, 500, 750, 1000, 2000])
+    y = np.array([0.0,0.2,0.4,0.6,0.8,1.0])
 
     plt.figure(dpi=300)
     ax = plt.subplot(111)
@@ -97,7 +98,8 @@ if __name__ == '__main__':
     ax.set_xlabel("Population Density (persons/km²)", fontLabel)
     ax.set_ylabel("Credibility", fontLabel)
     ax.set_xticklabels(x, fontTick)
-    ax.set_yticklabels([0,0.0,0.2,0.4,0.6,0.8,1.0],fontTick)
+    ax.set_yticks(y)
+    ax.set_yticklabels(y,fontTick)
     # ax.yaxis.grid(True)
     ax.spines["top"].set_linewidth(1.5)
     ax.spines["bottom"].set_linewidth(1.5)
