@@ -95,54 +95,91 @@ if __name__ == '__main__':
     errmisListSum = np.array(errmisListSum)
     misjugListSum = np.array(misjugListSum)
 
-    #折线图
-    for ax, title, data in zip(axes, ["Accuracy", "Error Detection Rate", "Error Missing Rate", "Misjudgement Rate"],
-                               [accListSum, errdetListSum, errmisListSum, misjugListSum]):
-        for line,index in zip(data,["1.0","0.8","0.6","0.4"]):
-            ax.plot(x, line, linewidth=2,label="Threshold = "+index)
-
-        fontTitle = {
-            'family': 'Arial',
-            'weight': 'normal',
-            # 'style': 'italic',
-            'size': 15,
-        }
-        fontLabel = {
-            'family': 'Arial',
-            'weight': 'bold',
-            # 'style': 'italic',
-            'size': 13,
-        }
-        fontTick = {
-            'family': 'Arial',
-            'weight': 'normal',
-            'style': 'italic',
-            'size': 11,
-        }
-        ax.set_xlabel("Percentage of Cheaters", fontLabel)
-        ax.set_ylabel("Value", fontLabel)
-        ax.set_xscale("log")
-        # ax.set_ylim(0.0,1.0)
-        ax.set_xticks(x)
-        ax.set_xticklabels(x, fontTick)
-        ax.set_yticks(y)
-        ax.set_yticklabels(y, fontTick)
-        # ax.yaxis.grid(True)
-        ax.spines["top"].set_linewidth(1.5)
-        ax.spines["bottom"].set_linewidth(1.5)
-        ax.spines["left"].set_linewidth(1.5)
-        ax.spines["right"].set_linewidth(1.5)
-        ax.set_title(title, fontdict=fontTitle)
-
-    # 显示图例
-    # num1 = 1.05
-    # num2 = 0
-    # num3 = 3
-    # num4 = 0
-    # plt.legend(bbox_to_anchor=(num1, num2), loc=num3, borderaxespad=num4)
+    # 折线图
+    # for ax, title, data in zip(axes, ["Accuracy", "Error Detection Rate", "Error Missing Rate", "Misjudgement Rate"],
+    #                            [accListSum, errdetListSum, errmisListSum, misjugListSum]):
+    #     for line,index in zip(data,["1.0","0.8","0.6","0.4"]):
+    #         ax.plot(x, line, linewidth=2,label="Threshold = "+index)
     #
-    # ax4.legend(loc=2, bbox_to_anchor=(1.05, 1.0), borderaxespad=0.)
+    #     fontTitle = {
+    #         'family': 'Arial',
+    #         'weight': 'normal',
+    #         # 'style': 'italic',
+    #         'size': 15,
+    #     }
+    #     fontLabel = {
+    #         'family': 'Arial',
+    #         'weight': 'bold',
+    #         # 'style': 'italic',
+    #         'size': 13,
+    #     }
+    #     fontTick = {
+    #         'family': 'Arial',
+    #         'weight': 'normal',
+    #         'style': 'italic',
+    #         'size': 11,
+    #     }
+    #     ax.set_xlabel("Percentage of Cheaters", fontLabel)
+    #     ax.set_ylabel("Value", fontLabel)
+    #     ax.set_xscale("log")
+    #     # ax.set_ylim(0.0,1.0)
+    #     ax.set_xticks(x)
+    #     ax.set_xticklabels(x, fontTick)
+    #     ax.set_yticks(y)
+    #     ax.set_yticklabels(y, fontTick)
+    #     # ax.yaxis.grid(True)
+    #     ax.spines["top"].set_linewidth(1.5)
+    #     ax.spines["bottom"].set_linewidth(1.5)
+    #     ax.spines["left"].set_linewidth(1.5)
+    #     ax.spines["right"].set_linewidth(1.5)
+    #     ax.set_title(title, fontdict=fontTitle)
+    # plt.tight_layout()
+    # plt.show()
+
+
+    # 柱状图
+    fontTitle = {
+        'family': 'Arial',
+        'weight': 'normal',
+        # 'style': 'italic',
+        'size': 15,
+    }
+    fontLabel = {
+        'family': 'Arial',
+        'weight': 'bold',
+        # 'style': 'italic',
+        'size': 13,
+    }
+    fontTick = {
+        'family': 'Arial',
+        'weight': 'normal',
+        'style': 'italic',
+        'size': 11,
+    }
+    # colors = ["#264653","#2a9d8c","#e9c46b","#e66f51"]
+    colors = ["#a40545","#f48f44","#fdd985","#7fcba4"]
+    for ax, (th, res) in zip(axes, data.items()):
+        ax.set_title("Threshold = " + th[2:], fontdict=fontTitle)
+        TT = np.array([i["TT"] for i in res.values()])
+        TF = np.array([i["TF"] for i in res.values()])
+        FT = np.array([i["FT"] for i in res.values()])
+        FF = np.array([i["FF"] for i in res.values()])
+        ax.bar(range(1, len(x) + 1), FF, width=0.6, color=colors[0], label="FF")
+        ax.bar(range(1, len(x) + 1), TF, width=0.6, color=colors[1], bottom=FF, label="TF")
+        ax.bar(range(1, len(x) + 1), FT, width=0.6, color=colors[2], bottom=FF + TF, label="FT")
+        ax.bar(range(1, len(x) + 1), TT, width=0.6, color=colors[3], bottom=FF + TF + FT, label="TT")
+        # ax.bar(range(1, len(x) + 1), FF, width=0.6, color=colors[0], edgecolor="black", linewidth=0.5, label="FF")
+        # ax.bar(range(1, len(x) + 1), TF, width=0.6, color=colors[1], edgecolor="black", linewidth=0.5, bottom=FF, label="TF")
+        # ax.bar(range(1, len(x) + 1), FT, width=0.6, color=colors[2], edgecolor="black", linewidth=0.5, bottom=FF + TF, label="FT")
+        # ax.bar(range(1, len(x) + 1), TT, width=0.6, color=colors[3], edgecolor="black", linewidth=0.5, bottom=FF + TF + FT, label="TT")
+        ax.set_xticks(range(1, len(x) + 1))
+        ax.set_xticklabels(x, fontTick)
+        ax.set_ylim(0, 1000)
+        ax.set_xlabel("Percentage of Cheaters", fontLabel)
+        ax.set_ylabel("Persons", fontLabel)
+
+    # plt.legend(ncol=4,bbox_to_anchor=(0.5, 0),prop=fontLabel)
+    # plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.2, hspace=0.5)
+    # plt.figure(figsize=(10,10))
     plt.tight_layout()
     plt.show()
-
-    #柱状图

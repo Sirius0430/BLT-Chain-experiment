@@ -27,7 +27,6 @@ if __name__ == '__main__':
     y = np.array([0.0,0.2,0.4,0.6,0.8,1.0])
 
     plt.figure(dpi=300)
-    ax = plt.subplot(111)
     # subplot(151)，已废弃
     # ax1 = plt.subplot(221)
     # ax2 = plt.subplot(222)
@@ -36,6 +35,7 @@ if __name__ == '__main__':
     # ax5 = plt.subplot(155)
 
     # 平均值折线图
+    # ax = plt.subplot(111)
     # colors = ['#264653', '#2a9d8e', '#e9c46b','#f3a261','#e66f51']
     # for (k,v),c in zip(means.items(),colors):
     #     #拟合曲线图
@@ -63,48 +63,56 @@ if __name__ == '__main__':
     #     ax.set_ylabel("Credibility")
 
     # 箱线图
-    WN = "5"
-    bp = ax.boxplot(allPoints[WN],
-                    labels=x,
-                    vert=True,
-                    patch_artist=True,
-                    showmeans=True,
-                    meanline=False,
-                    flierprops=dict(marker='o', markerfacecolor='black'))
-    ax.plot(range(1, 7), means[WN], label="Mean", linewidth=2)
-    ax.plot(range(1, 7), medians[WN], label="Median", linewidth=2)
-    # 颜色填充
-    colors = ['#4eab90A0', '#8eb69cA0', '#edddc3A0', '#eebf6dA0', '#d94f33A0', '#834026A0']
-    for patch, color in zip(bp['boxes'], colors):
-        patch.set_facecolor(color)
-    fontTitle = {
-        'family': 'Arial',
-        'weight': 'normal',
-        # 'style': 'italic',
-        'size': 18,
-    }
-    fontLabel = {
-        'family': 'Arial',
-        'weight': 'bold',
-        # 'style': 'italic',
-        'size': 15,
-    }
-    fontTick = {
-        'family': 'Arial',
-        'weight': 'normal',
-        'style': 'italic',
-        'size': 12,
-    }
-    ax.set_xlabel("Population Density (persons/km²)", fontLabel)
-    ax.set_ylabel("Credibility", fontLabel)
-    ax.set_xticklabels(x, fontTick)
-    ax.set_yticks(y)
-    ax.set_yticklabels(y,fontTick)
-    # ax.yaxis.grid(True)
-    ax.spines["top"].set_linewidth(1.5)
-    ax.spines["bottom"].set_linewidth(1.5)
-    ax.spines["left"].set_linewidth(1.5)
-    ax.spines["right"].set_linewidth(1.5)
-    ax.legend(loc="lower right", prop={"size": 13})
-    ax.set_title("Witness = " + WN,fontdict=fontTitle)
+    ax1 = plt.subplot(3,2,1)
+    ax2 = plt.subplot(3,2,2)
+    ax3 = plt.subplot(3,2,3)
+    ax4 = plt.subplot(3,2,4)
+    ax5 = plt.subplot(3,2,5)
+    axes = [ax1,ax2,ax3,ax4,ax5]
+    for ax,WN in zip(axes,range(3,8)):
+        WN = str(WN)
+        bp = ax.boxplot(allPoints[WN],
+                        labels=x,
+                        vert=True,
+                        patch_artist=True,
+                        showmeans=True,
+                        meanline=False,
+                        flierprops=dict(marker='o', markerfacecolor='black'))
+        ax.plot(range(1, 7), means[WN], label="Mean", linewidth=2)
+        ax.plot(range(1, 7), medians[WN], label="Median", linewidth=2)
+        # 颜色填充
+        colors = ['#4eab90A0', '#8eb69cA0', '#edddc3A0', '#eebf6dA0', '#d94f33A0', '#834026A0']
+        for patch, color in zip(bp['boxes'], colors):
+            patch.set_facecolor(color)
+        fontTitle = {
+            'family': 'Arial',
+            'weight': 'normal',
+            # 'style': 'italic',
+            'size': 18,
+        }
+        fontLabel = {
+            'family': 'Arial',
+            'weight': 'bold',
+            # 'style': 'italic',
+            'size': 15,
+        }
+        fontTick = {
+            'family': 'Arial',
+            'weight': 'normal',
+            'style': 'italic',
+            'size': 12,
+        }
+        ax.set_xlabel("Population Density (persons/km²)", fontLabel)
+        ax.set_ylabel("Credibility", fontLabel)
+        ax.set_xticklabels(x, fontTick)
+        ax.set_yticks(y)
+        ax.set_yticklabels(y,fontTick)
+        # ax.yaxis.grid(True)
+        ax.spines["top"].set_linewidth(1.5)
+        ax.spines["bottom"].set_linewidth(1.5)
+        ax.spines["left"].set_linewidth(1.5)
+        ax.spines["right"].set_linewidth(1.5)
+        # ax.legend(loc="lower right", prop={"size": 13})
+        ax.set_title("Witness = " + WN,fontdict=fontTitle)
+    plt.tight_layout()
     plt.show()
