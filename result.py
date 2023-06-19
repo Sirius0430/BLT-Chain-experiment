@@ -4,19 +4,19 @@ import matplotlib
 import os
 
 
-def acc(tt, ff, sum):
+def acc(tt, ff,tf,ft, sum):
     return np.round(((tt + ff) / sum), 3)
 
 
-def errdet(ff, tf):
-    return np.round(ff / (ff + tf), 3)
+def errdet(tt, ff,tf,ft, sum):
+    return np.round(ff / (ff+tf), 3)
 
 
-def errmis(ff, tf, sum):
-    return np.round(tf / sum, 3)
+def errmis(tt, ff,tf,ft, sum):
+    return np.round(tf / (ff+tf), 3)
 
 
-def misjug(ft, tt):
+def misjug(tt, ff,tf,ft, sum):
     return np.round(ft / (ft + tt), 3)
 
 
@@ -47,12 +47,6 @@ if __name__ == '__main__':
             res[list(res.keys())[index]] = classification
         data["th" + str(th)] = res
 
-    ax1 = plt.subplot(221)
-    ax2 = plt.subplot(222)
-    ax3 = plt.subplot(223)
-    ax4 = plt.subplot(224)
-
-    axes = [ax1, ax2, ax3, ax4]
 
     accListSum = []
     errdetListSum = []
@@ -71,10 +65,10 @@ if __name__ == '__main__':
             ft = v["FT"]
             ff = v["FF"]
             sum = tt + tf + ft + ff
-            Acc = acc(tt, ff, sum)
-            Errdet = errdet(ff, tf)
-            Erravo = errmis(ff, tf, sum)
-            Misjug = misjug(ft, tt)
+            Acc = acc(tt, ff,tf,ft, sum)
+            Errdet = errdet(tt, ff,tf,ft, sum)
+            Erravo = errmis(tt, ff,tf,ft, sum)
+            Misjug = misjug(tt, ff,tf,ft, sum)
             accList.append(Acc)
             errdetList.append(Errdet)
             errmisList.append(Erravo)
@@ -96,9 +90,17 @@ if __name__ == '__main__':
     misjugListSum = np.array(misjugListSum)
 
     # 折线图
-    for ax, title, data in zip(axes, ["Accuracy", "Error Detection Rate", "Error Missing Rate", "Misjudgement Rate"],
-                               [accListSum, errdetListSum, errmisListSum, misjugListSum]):
-        for line,index in zip(data,["1.0","0.8","0.6","0.4"]):
+    # for ax, title, data in zip(axes, ["Accuracy", "Error Detection Rate", "Error Missing Rate", "Misjudgement Rate"],
+    #                            [accListSum, errdetListSum, errmisListSum, misjugListSum]):
+    plt.figure(figsize=(15,5))
+    ax1 = plt.subplot(131)
+    ax2 = plt.subplot(132)
+    ax3 = plt.subplot(133)
+
+    axes = [ax1, ax2, ax3]
+    for ax, title, data in zip(axes, ["Accuracy", "Error Detection Rate", "Misjudgement Rate"],
+                               [accListSum, errdetListSum, misjugListSum]):
+        for line,index in zip(data,["0.4","0.6","0.8","1.0"]):
             ax.plot(x, line, linewidth=2,label="Threshold = "+index)
 
         fontTitle = {
@@ -135,8 +137,8 @@ if __name__ == '__main__':
         ax.set_title(title, fontdict=fontTitle)
         ax.legend()
     plt.tight_layout()
+    plt.savefig("fig/accLineChart.png",dpi=300)
     plt.show()
-
 
     # 柱状图
     # fontTitle = {
@@ -158,7 +160,13 @@ if __name__ == '__main__':
     #     'size': 11,
     # }
     # # colors = ["#264653","#2a9d8c","#e9c46b","#e66f51"]
-    # colors = ["#a40545","#f48f44","#fdd985","#7fcba4"]
+    # colors = ["#a40545", "#f48f44", "#fdd985", "#7fcba4"]
+    #
+    # ax1 = plt.subplot(221)
+    # ax2 = plt.subplot(222)
+    # ax3 = plt.subplot(223)
+    # ax4 = plt.subplot(224)
+    # axes = [ax1, ax2, ax3, ax4]
     # for ax, (th, res) in zip(axes, data.items()):
     #     ax.set_title("Threshold = " + th[2:], fontdict=fontTitle)
     #     TT = np.array([i["TT"] for i in res.values()])
@@ -180,7 +188,9 @@ if __name__ == '__main__':
     #     ax.set_ylabel("Persons", fontLabel)
     #
     # # plt.legend(ncol=4,bbox_to_anchor=(0.5, 0),prop=fontLabel)
+    # plt.legend(prop=fontLabel)
     # # plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.2, hspace=0.5)
     # # plt.figure(figsize=(10,10))
     # plt.tight_layout()
+    # plt.savefig("fig/distributionChart.png",dpi=300)
     # plt.show()
