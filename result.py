@@ -1,3 +1,5 @@
+import gc
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
@@ -46,6 +48,14 @@ if __name__ == '__main__':
                     classification["FF"] += 1
             res[list(res.keys())[index]] = classification
         data["th" + str(th)] = res
+
+    del t0990
+    del t0975
+    del t0950
+    del t0900
+    del t0800
+    del t0500
+    gc.collect()
 
 
     accListSum = []
