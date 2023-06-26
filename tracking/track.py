@@ -130,6 +130,8 @@ def iterate2(uid, depth, time, Auid, trueRes):  # 计算验证准确率
     BTConnection = list(set(BTConnection) - set(banList))
     userNum = len(BTConnection)
     selectedUser = []
+    if userNum == 0:
+        return False, trueRes
     if userNum < static.userPerIter:
         selectedUser = BTConnection
     else:
@@ -159,7 +161,7 @@ def iterate2(uid, depth, time, Auid, trueRes):  # 计算验证准确率
                 banList.append(k)
                 lock.release()
 
-    threshold = sCreditIndex / static.userPerIter
+    threshold = sCreditIndex / min(static.userPerIter, userNum)
     if threshold >= static.Threshold:  # true的人数多
         return True, trueRes
     else:
