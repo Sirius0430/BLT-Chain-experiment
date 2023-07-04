@@ -27,6 +27,8 @@ if __name__ == '__main__':
     data = {}
     for th in [0.4, 0.6, 0.8, 1.0]:
         basedir = "tracking/Credit/threshold-" + str(th) + "/"
+    # for th in [1.0]:
+    #     basedir = "threshold-" + str(th) + "/"
         t0990 = np.load(basedir + "credit0.99-0.01.npy")
         t0975 = np.load(basedir + "credit0.975-0.025.npy")
         t0950 = np.load(basedir + "credit0.95-0.05.npy")
