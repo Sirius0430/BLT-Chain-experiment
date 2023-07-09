@@ -101,7 +101,7 @@ if __name__ == '__main__':
     ax.set_yticks(y)
     ax.set_yticklabels(y, fontTick)
     ax.legend(loc="lower right", prop={"size": 13})
-    ax.set_title()
+    ax.set_title("")
 
     #箱线图
     axes = [ax1,ax2,ax3,ax4,ax5]

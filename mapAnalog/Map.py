@@ -1,6 +1,8 @@
+# -*- coding: UTF-8 -*-
+
 import numpy as np
 from User import User
-import static
+from module import static
 from collections import Counter
 class Map:
     size = static.mapSize #地图大小

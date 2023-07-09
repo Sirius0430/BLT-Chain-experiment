@@ -5,7 +5,7 @@ def choice(num,sum):
 
 
 if __name__ == '__main__':
-    path = "tracking/Credit/threshold-0.8/credit0.9-0.1.npy"
+    path = "backup/CreditBackup/0709/threshold-0.8/credit0.9-0.1.npy"
     data = np.load(path)
     data = data.tolist()
     count = 0

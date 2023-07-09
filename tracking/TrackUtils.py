@@ -10,7 +10,7 @@ import pickle
 
 # 给半径，确定圆的范围
 # 基本思路:利用圆的中心对称，只计算四分之一个圆
-import static
+from module import static
 
 
 def findCircle(r, c):  # r=radius,c=center

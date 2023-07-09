@@ -22,15 +22,14 @@ oriPoss = [0.2, 0.2, 0.2, 0.2, 0.2]  # 选择前进方向时的可能性
 time = 60  # 每次迭代的间隔时间（单位s）
 mapSize = 1000  # 地图大小
 userNum = 100000  # 用户数量
-creditPoss = [0.9,0.1]  # 真实用户与作弊用户分布
+creditPoss = [0.5,0.5]  # 真实用户与作弊用户分布
 
-interval = 7  # 找人的间隔（几个time）
+interval = 5  # 找人的间隔（几个time）
 bluetoothDistance = 50  # 蓝牙连接距离
 userPerIter = 5  # 每轮循环的验证人数
-EXPusernum = 500  # 实验人数
-Nround = 4  # 递归轮次
-Threshold = 0.6  # 可信阈值，有多少比例的验证者认为是true才可以通过
+EXPusernum = 1000  # 实验人数
+Nround = 3 # 递归轮次
+Threshold = 0.4  # 可信阈值，有多少比例的验证者认为是true才可以通过
 extraThreshold = Threshold    #extra round的阈值
 
-
-cpu = 8  # 线程数
+cpu = 16  # 线程数

@@ -45,7 +45,7 @@ def iterate(uid, creditRate, depth, time):
         SUserPre = SRecordPre.userList[s - 1]
         SRecordBack = readObj("../mapAnalog/map/map{}.pkl".format(time + static.interval))  # 证明者后一个位置
         SUserBack = SRecordBack.userList[s - 1]
-        # SEllipse = findEllipse(int(SUserPre.speed * static.time * 2 * static.interval / 10), SUserBack.location,
+        # SEllipse = findEllipse(int(SUserPre.speed * module.time * 2 * module.interval / 10), SUserBack.location,
         #                        SUserPre.location)  # 证明者的运动范围
         # if len(np.intersect1d(UCircle, SEllipse)) > 0:  # 判断运动范围是否有交集
         hasIntersact = findEllipse(int(SUserPre.speed * static.time * 2 * static.interval / 10), SUserBack.location,

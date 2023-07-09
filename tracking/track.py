@@ -8,7 +8,7 @@ import pickle
 import multiprocessing
 import collections
 
-import static
+from module import static
 from TrackUtils import *
 
 banList = []
@@ -47,7 +47,7 @@ def iterate(uid, creditRate, depth, time):
         SUserPre = SRecordPre.userList[s - 1]
         SRecordBack = readObj("../mapAnalog/map/map{}.pkl".format(time + static.interval))  # 证明者后一个位置
         SUserBack = SRecordBack.userList[s - 1]
-        # SEllipse = findEllipse(int(SUserPre.speed * static.time * 2 * static.interval / 10), SUserBack.location,
+        # SEllipse = findEllipse(int(SUserPre.speed * module.time * 2 * module.interval / 10), SUserBack.location,
         #                        SUserPre.location)  # 证明者的运动范围
         # if len(np.intersect1d(UCircle, SEllipse)) > 0:  # 判断运动范围是否有交集
         hasIntersact = findEllipse(int(SUserPre.speed * static.time * 2 * static.interval / 10), SUserBack.location,
@@ -186,10 +186,10 @@ def iterate2(uid, depth, time, Auid, trueRes):  # 计算验证准确率
     #         extraBTConnection = findBTConnection(extraUID, user.location, Umap)
     #         extraNum = len(extraBTConnection)
     #         extraSelectedUser = []
-    #         if extraNum < static.userPerIter:
+    #         if extraNum < module.userPerIter:
     #             extraSelectedUser = extraBTConnection
     #         else:
-    #             extraSelectedUser = np.random.choice(extraBTConnection, size=static.userPerIter, replace=False)
+    #             extraSelectedUser = np.random.choice(extraBTConnection, size=module.userPerIter, replace=False)
     #         for s in extraSelectedUser:
     #             extraWitness = UuserList[s - 1]
     #             if extraWitness.credit == "True":
@@ -205,10 +205,10 @@ def iterate2(uid, depth, time, Auid, trueRes):  # 计算验证准确率
     #         extraBTConnection = findBTConnection(extraUID, user.location, Umap)
     #         extraNum = len(extraBTConnection)
     #         extraSelectedUser = []
-    #         if extraNum < static.userPerIter:
+    #         if extraNum < module.userPerIter:
     #             extraSelectedUser = extraBTConnection
     #         else:
-    #             extraSelectedUser = np.random.choice(extraBTConnection, size=static.userPerIter, replace=False)
+    #             extraSelectedUser = np.random.choice(extraBTConnection, size=module.userPerIter, replace=False)
     #         for s in extraSelectedUser:
     #             extraWitness = UuserList[s - 1]
     #             if extraWitness.credit == "False":
@@ -254,7 +254,7 @@ if __name__ == '__main__':
     # pool.close()
     # pool.join()
     # print("final res:{}".format(np.mean(CRres)))
-    # np.save("Res/density-{}/res{}.npy".format(static.userPerIter, static.userNum), CRres)
+    # np.save("Res/density-{}/res{}.npy".format(module.userPerIter, module.userNum), CRres)
 
     # Credit实验
     creditRes = []
