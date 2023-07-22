@@ -131,7 +131,8 @@ def iterate2(uid, depth, time, Auid, trueRes):  # 计算验证准确率
     userNum = len(BTConnection)
     selectedUser = []
     if userNum == 0:
-        return False, trueRes
+        return True, trueRes
+        # return False, trueRes
     if userNum < static.userPerIter:
         selectedUser = BTConnection
     else:
