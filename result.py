@@ -105,14 +105,15 @@ if __name__ == '__main__':
     # 折线图
     # for ax, title, data in zip(axes, ["Accuracy", "Error Detection Rate", "Error Missing Rate", "Misjudgement Rate"],
     #                            [accListSum, errdetListSum, errmisListSum, misjugListSum]):
-    plt.figure(figsize=(15,5))
-    ax1 = plt.subplot(131)
-    ax2 = plt.subplot(132)
-    ax3 = plt.subplot(133)
 
-    axes = [ax1, ax2, ax3]
-    for ax, title, data in zip(axes, ["Accuracy", "Error Detection Rate", "Misjudgement Rate"],
-                               [accListSum, errdetListSum, misjugListSum]):
+
+    plt.figure(figsize=(10,5))
+    ax1 = plt.subplot(121)
+    ax2 = plt.subplot(122)
+
+    axes = [ax1, ax2]
+    for ax, title, data in zip(axes, ["Accuracy", "Accusation Rate"],
+                               [accListSum, misjugListSum]):
         for line,index in zip(data,["0.4","0.6","0.8","1.0"]):
             ax.plot(x, line, linewidth=2,label="Threshold = "+index)
 
@@ -200,7 +201,7 @@ if __name__ == '__main__':
     #     ax.set_xlabel("Percentage of Cheaters", fontLabel)
     #     ax.set_ylabel("Persons", fontLabel)
     #
-    # # plt.legend(ncol=4,bbox_to_anchor=(0.5, 0),prop=fontLabel)
+    # # plt.legend(ncol=4,bbox_to_anchor=(0, -0.5),prop=fontLabel)
     # plt.legend(prop=fontLabel)
     # # plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.2, hspace=0.5)
     # # plt.figure(figsize=(10,10))
