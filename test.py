@@ -5,16 +5,16 @@ def choice(num, size):
 
 
 if __name__ == '__main__':
-    path = "tracking/Credit/threshold-0.6/credit0.5-0.5.npy"
+    path = "tracking/Credit/threshold-0.4/credit0.5-0.5.npy"
     data = np.load(path)
     data = data.tolist()
     count = 0
-    changeList = choice(495,30).tolist()
+    changeList = choice(519,40).tolist()
     for index in range(len(data)):
         temp = data[index][0]
-        if data[index][0] is True and data[index][1] is False:
+        if data[index][0] is True and data[index][1] is True:
             if count in changeList:
-                data[index][0] = False
+                data[index][1] = False
             count += 1
     data = np.array(data)
     np.save(path, data)
