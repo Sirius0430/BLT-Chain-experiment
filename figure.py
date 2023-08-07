@@ -47,10 +47,16 @@ if __name__ == '__main__':
     plt.figure(dpi=300)
 
     #WN和CR合成一个指标
-    wn = np.array([3,4,5,6,7]).reshape(1,5)
+
+    def sigmoid(x):
+        return 1.0 / (1 + np.exp(-x))
+
+    wn = np.array([3,4,5,6,7]).reshape(5,1)
     cr = np.array(list(means.values()))
-    y=np.log(wn)*cr
+    y=np.log10(wn)*(cr-0.5)
+    y = (y-np.min(y))/(np.max(y)-np.min(y))
     print(y)
+    print(cr)
 
     # 平均值折线图
     # ax = plt.subplot(111)
