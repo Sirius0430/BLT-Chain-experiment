@@ -53,8 +53,8 @@ if __name__ == '__main__':
 
     wn = np.array([3,4,5,6,7]).reshape(5,1)
     cr = np.array(list(means.values()))
-    y=np.log10(wn)*(cr-0.5)
-    y = (y-np.min(y))/(np.max(y)-np.min(y))
+    y=np.log1p(wn)/np.log1p(np.max(wn))*(cr)
+    # y = (y-0.5)/(np.max(y)-np.min(y))*2
     print(y)
     print(cr)
 
