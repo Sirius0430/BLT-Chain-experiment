@@ -42,57 +42,33 @@ if __name__ == '__main__':
         var[str(wn)] = [np.round(np.var(i), 3) for i in [res10000, res25000, res50000, res75000, res100000, res200000]]
         allPoints[str(wn)] = [np.round(i, 3) for i in [res10000, res25000, res50000, res75000, res100000, res200000]]
     x = np.array([100, 250, 500, 750, 1000, 2000])
-    y = np.array([0.2,0.4,0.6,0.8,1.0])
+    y = np.array([0.2, 0.4, 0.6, 0.8, 1.0])
 
     plt.figure(dpi=300)
 
-    #WN和CR合成一个指标
+    # WN和CR合成一个指标
 
     def sigmoid(x):
         return 1.0 / (1 + np.exp(-x))
 
-    wn = np.array([3,4,5,6,7]).reshape(5,1)
+
+    wn = np.array([3, 4, 5, 6, 7]).reshape(5, 1)
     cr = np.array(list(means.values()))
-    y=np.log1p(wn)/np.log1p(np.max(wn))*(cr)
-    # y = (y-0.5)/(np.max(y)-np.min(y))*2
+    y = np.log1p(wn) / np.log1p(np.max(wn)) * (cr)
+    y = (y - 0.5) / (np.max(y) - np.min(y)) * 2
     print(y)
     print(cr)
 
-    # 平均值折线图
-    # ax = plt.subplot(111)
-    # colors = ['#264653', '#2a9d8e', '#e9c46b','#f3a261','#e66f51']
-    # for (k,v),c in zip(means.items(),colors):
-    #     #拟合曲线图
-    #     # f = np.polyfit(x, v, 3)
-    #     # x2 = np.linspace(0, 2000, 2001, endpoint=True)
-    #     # p = np.poly1d(f)
-    #     # y2 = p(x2)
-    #     # ax.plot(x2,y2,label="Witness = "+k,linewidth=2)
-    #
-    #     #折线图
-    #     ax.plot(x,v,label="Witness = "+k,linewidth=2,color = c)
-    # ax.set_xlabel("Population Density (persons/km2)",fontLabel)
-    # ax.set_ylabel("Credibility",fontLabel)
-    # ax.set_xscale("log")
-    # # ax.set_yscale("log")
-    # ax.set_xticks(x)
-    # ax.set_xticklabels(x, fontTick)
-    # ax.set_yticks(y)
-    # ax.set_yticklabels(y, fontTick)
-    # ax.legend(loc="lower right",prop={"size":13})
-    # plt.savefig("fig/lineChart.png",dpi=300)
-    # plt.show()
-
     # 总图
-    plt.figure(figsize=(15,10))
-    ax = plt.subplot(2,3,1)
-    ax1 = plt.subplot(2,3,2)
-    ax2 = plt.subplot(2,3,3)
-    ax3 = plt.subplot(2,3,4)
-    ax4 = plt.subplot(2,3,5)
-    ax5 = plt.subplot(2,3,6)
+    plt.figure(figsize=(15, 10))
+    ax = plt.subplot(2, 3, 1)
+    ax1 = plt.subplot(2, 3, 2)
+    ax2 = plt.subplot(2, 3, 3)
+    ax3 = plt.subplot(2, 3, 4)
+    ax4 = plt.subplot(2, 3, 5)
+    ax5 = plt.subplot(2, 3, 6)
 
-    #折线图
+    # #折线图
     # colors = ['#264653', '#2a9d8e', '#e9c46b','#f3a261','#e66f51']
     # for (k,v),c in zip(means.items(),colors):
     #     #拟合曲线图
@@ -103,19 +79,19 @@ if __name__ == '__main__':
     #     # ax.plot(x2,y2,label="Witness = "+k,linewidth=2)
     #
     #     #折线图
-    #     ax.plot(x,v,label="Witness = "+k,linewidth=2,color = c)
+    #     ax.plot(x,v,label="WN = "+k,linewidth=2,color = c)
     # ax.set_xlabel("Population Density (persons/km2)",fontLabel)
-    # ax.set_ylabel("Credibility",fontLabel)
+    # ax.set_ylabel("CR",fontLabel)
     # ax.set_xscale("log")
     # # ax.set_yscale("log")
     # ax.set_xticks(x)
-    # ax.set_xticklabels(x, fontTick)
+    # ax.set_xticklabels(x, fontdict=fontTick)
     # ax.set_yticks(y)
-    # ax.set_yticklabels(y, fontTick)
+    # ax.set_yticklabels(y, fontdict=fontTick)
     # ax.legend(loc="lower right", prop={"size": 13})
     # ax.set_title("")
-
-    #箱线图
+    #
+    # # 箱线图
     # axes = [ax1,ax2,ax3,ax4,ax5]
     # for ax,WN in zip(axes,range(3,8)):
     #     WN = str(WN)
@@ -139,16 +115,16 @@ if __name__ == '__main__':
     #         patch.set_facecolor(boxcolor)
     #
     #     ax.set_xlabel("Population Density (persons/km²)", fontLabel)
-    #     ax.set_ylabel("Credibility", fontLabel)
-    #     ax.set_xticklabels(x, fontTick)
+    #     ax.set_ylabel("CR", fontLabel)
+    #     ax.set_xticklabels(x, fontdict=fontTick)
     #     ax.set_yticks(y)
-    #     ax.set_yticklabels(y,fontTick)
+    #     ax.set_yticklabels(y,fontdict=fontTick)
     #     ax.spines["top"].set_linewidth(1.5)
     #     ax.spines["bottom"].set_linewidth(1.5)
     #     ax.spines["left"].set_linewidth(1.5)
     #     ax.spines["right"].set_linewidth(1.5)
     #     ax.legend(loc="lower right", prop={"size": 13})
-    #     ax.set_title("Witness = " + WN,fontdict=fontTitle)
+    #     ax.set_title("WN = " + WN,fontdict=fontTitle)
     # plt.tight_layout()
     # plt.savefig("fig/boxChart.png",dpi=300)
     # plt.show()
