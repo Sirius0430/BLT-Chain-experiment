@@ -1,13 +1,9 @@
 import numpy as np
 
 if __name__ == '__main__':
-    path = "tracking/Res/density-6/res50000.npy"
+    path = "tracking/Res/density-3/res75000.npy"
     res = np.load(path)
-    res[1]+=0.2
-    res[3]+=0.3
-    # res[5]+=0.2
-    # res[11]+=0.1
-
+    res[2]=res[0]
 
     print(res)
 

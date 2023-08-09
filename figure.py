@@ -54,9 +54,8 @@ if __name__ == '__main__':
 
     wn = np.array([3, 4, 5, 6, 7]).reshape(5, 1)
     cr = np.array(list(means.values()))
-    y = np.log1p(wn) / np.log1p(np.max(wn)) * (cr)
-    y = (y - 0.5) / (np.max(y) - np.min(y)) * 2
-    print(y)
+    y = np.log10(wn+1) / np.log10(np.max(wn)) * cr-2/3
+    print(np.round(y,3))
     print(cr)
 
     # 总图
