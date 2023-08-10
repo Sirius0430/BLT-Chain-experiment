@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
+import seaborn as sb
 
 matplotlib.rcParams['font.sans-serif'] = ['Arial']
 
@@ -48,24 +49,30 @@ if __name__ == '__main__':
 
     # WN和CR合成一个指标
 
-    def sigmoid(x):
-        return 1.0 / (1 + np.exp(-x))
-
-
+    ax = plt.subplot(1,1,1)
     wn = np.array([3, 4, 5, 6, 7]).reshape(5, 1)
     cr = np.array(list(means.values()))
-    y = np.log10(wn+1) / np.log10(np.max(wn)) * cr-2/3
-    print(np.round(y,3))
-    print(cr)
+    res = np.log10(wn) / np.log10(np.max(wn)) * cr
+    res = (res-0.5)*2
+    res = np.round(res,3)
+    # res_sign = np.sign(res)
+    # res_sqrt = np.power(np.abs(res),1/2)
+    # res = np.multiply(res_sqrt,res_sign)
+    sb.heatmap(np.flipud(res),cmap="coolwarm",center=0,annot=True)
+    ax.set_xlabel("Population Density (persons/km²)", fontLabel)
+    ax.set_ylabel("WN", fontLabel)
+    ax.set_xticklabels(x, fontdict=fontTick)
+    ax.set_yticklabels(np.array(np.flipud([3,4,5,6,7])),fontdict=fontTick)
+    plt.show()
 
     # 总图
-    plt.figure(figsize=(15, 10))
-    ax = plt.subplot(2, 3, 1)
-    ax1 = plt.subplot(2, 3, 2)
-    ax2 = plt.subplot(2, 3, 3)
-    ax3 = plt.subplot(2, 3, 4)
-    ax4 = plt.subplot(2, 3, 5)
-    ax5 = plt.subplot(2, 3, 6)
+    # plt.figure(figsize=(15, 10))
+    # ax = plt.subplot(2, 3, 1)
+    # ax1 = plt.subplot(2, 3, 2)
+    # ax2 = plt.subplot(2, 3, 3)
+    # ax3 = plt.subplot(2, 3, 4)
+    # ax4 = plt.subplot(2, 3, 5)
+    # ax5 = plt.subplot(2, 3, 6)
 
     # #折线图
     # colors = ['#264653', '#2a9d8e', '#e9c46b','#f3a261','#e66f51']
