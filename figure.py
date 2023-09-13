@@ -32,7 +32,7 @@ if __name__ == '__main__':
     for wn in [3, 4, 5, 6, 7]:
         res10000 = np.load(basedir + str(wn) + "/res10000.npy")
         res25000 = np.load(basedir + str(wn) + "/res25000.npy")
-        res50000 = np.load(basedir + str(wn) + "/res50000.npy")
+        res50000 = np.load(basedir + str(wn) + "/res50000.npy" )
         res75000 = np.load(basedir + str(wn) + "/res75000.npy")
         res100000 = np.load(basedir + str(wn) + "/res100000.npy")
         res200000 = np.load(basedir + str(wn) + "/res200000.npy")
@@ -63,7 +63,11 @@ if __name__ == '__main__':
     ax.set_ylabel("WN", fontLabel)
     ax.set_xticklabels(x, fontdict=fontTick)
     ax.set_yticklabels(np.array(np.flipud([3,4,5,6,7])),fontdict=fontTick)
+
+    plt.savefig("fig/usability.png", dpi=300)
     plt.show()
+
+
 
     # 总图
     # plt.figure(figsize=(15, 10))
