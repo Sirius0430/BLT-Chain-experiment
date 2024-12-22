@@ -1,35 +1,25 @@
 # -*- coding: UTF-8 -*-
 
-# 一些常数
+# constants
 import numpy as np
 
-# Deprecated
-# buildingP = np.array([0.01, 0.02, 0.03, 0.04, 0.90])  # 想去某个建筑的意愿 正式启用时需要修改
-# buildingLocation = [[100, 100], [100, 900], [700, 300], [500, 500]]
-# # 两个建筑物之间的道路，road[起始点][终点]
-# road = [[[],[],[],[],[]],
-#     [[],[], [(100, 100), (100, 900)], [(100, 100), (500, 100), (500, 300), (700, 300)],[(100, 100), (500, 100), (500, 500)]],
-#     [[],[(100, 900), (100, 100)], [], [(100, 900), (500, 900), (500, 300), (700, 300)],[(100, 900), (500, 900), (500, 500)]],
-#     [[],[(700, 300), (500, 300), (500, 100), (100, 100)], [(700, 300), (500, 300), (500, 900), (100, 900)], [],[(700, 300), (500, 300), (500, 500)]],
-#     [[],[(500, 500), (500, 100), (100, 100)], [(500, 500), (500, 900), (100, 900)], [(500, 500), (500, 300), (700, 300)],[]]
-# ]
 
 # Now Using
-# popDistribution = np.load("data/PopDistribution2.npy")  # 人口分布密度，用于随机生成用户
-speed = [1, 5, 15]  # 行人，自行车，汽车 m/s,实际中一格=10m，需要除10(或规定10s记录一次）
-# speedPoss = [0.6 / 3, 0.6 / 3, 0.6 / 3, 0.4]  # 选择速度的可能性，用于控制有多少人正常移动
-oriPoss = [0.2, 0.2, 0.2, 0.2, 0.2]  # 选择前进方向时的可能性
-time = 60  # 每次迭代的间隔时间（单位s）
-mapSize = 1000  # 地图大小
-userNum = 100000  # 用户数量
-creditPoss = [0.5,0.5]  # 真实用户与作弊用户分布
+# popDistribution = np.load("data/PopDistribution2.npy")  # Population distribution density for random user generation
+speed = [1, 5, 15]  # speed m/s, in practice one frame = 10m, need to divide by 10 (or specify 10s to be recorded once)
+# speedPoss = [0.6 / 3, 0.6 / 3, 0.6 / 3, 0.4]  # Possibility to choose the speed for controlling how many people move normally
+oriPoss = [0.2, 0.2, 0.2, 0.2, 0.2]  # Possibilities when choosing the way forward
+time = 60  # Interval between each iteration (in s)
+mapSize = 1000  # Map size
+userNum = 100000  # user num
+creditPoss = [0.5,0.5]  # Distribution of real and cheating users
 
-interval = 5  # 找人的间隔（几个time）
-bluetoothDistance = 50  # 蓝牙连接距离
-userPerIter = 5  # 每轮循环的验证人数
-EXPusernum = 1000  # 实验人数
-Nround = 3 # 递归轮次
-Threshold = 0.4  # 可信阈值，有多少比例的验证者认为是true才可以通过
-extraThreshold = Threshold    #extra round的阈值
+interval = 5  # Interval of finding someone (several TIME)
+bluetoothDistance = 50  # Bluetooth connection distance
+userPerIter = 5  # Number of verification per cycle
+EXPusernum = 1000  # Number of user
+Nround = 3
+Threshold = 0.4  # Confidence threshold, what percentage of verifiers think it is true to pass the
+extraThreshold = Threshold    #threshold of extra round
 
 cpu = 16  # 线程数

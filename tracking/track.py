@@ -23,8 +23,8 @@ def iterate(uid, creditRate, depth, time):
     if depth == static.Nround:
         return creditRate
     depth += 1
-    Umap = readObj("../mapAnalog/map/map{}.pkl".format(time)).map  # 证明者所处时刻的地图
-    UuserList = readObj("../mapAnalog/map/map{}.pkl".format(time)).userList  # 证明者所处时刻的用户列表
+    Umap = readObj("../mapAnalog/map/map{}.pkl".format(time)).map  # Map of Applicant's moment in time
+    UuserList = readObj("../mapAnalog/map/map{}.pkl".format(time)).userList  # Map of Applicant's user list in time
     user = UuserList[uid - 1]
 
     BTConnection = findBTConnection(user.uid, user.location, Umap)
@@ -41,32 +41,33 @@ def iterate(uid, creditRate, depth, time):
     del BTConnection
     gc.collect()
 
-    UCircle = findCircle(int(static.bluetoothDistance / 10), user.location)  # 被证明者的蓝牙连接
+    UCircle = findCircle(int(static.bluetoothDistance / 10), user.location)  # Bluetooth connectivity of Witness
     for s in selectedUser:
-        SRecordPre = readObj("../mapAnalog/map/map{}.pkl".format(time - static.interval))  # 证明者前一个位置
+        SRecordPre = readObj("../mapAnalog/map/map{}.pkl".format(time - static.interval))  # Previous position of Applicant
         SUserPre = SRecordPre.userList[s - 1]
-        SRecordBack = readObj("../mapAnalog/map/map{}.pkl".format(time + static.interval))  # 证明者后一个位置
+        SRecordBack = readObj("../mapAnalog/map/map{}.pkl".format(time + static.interval))  # latter position of Applicant
         SUserBack = SRecordBack.userList[s - 1]
         # SEllipse = findEllipse(int(SUserPre.speed * module.time * 2 * module.interval / 10), SUserBack.location,
-        #                        SUserPre.location)  # 证明者的运动范围
-        # if len(np.intersect1d(UCircle, SEllipse)) > 0:  # 判断运动范围是否有交集
+        #                        SUserPre.location)  # moving range of applicant
+        # if len(np.intersect1d(UCircle, SEllipse)) > 0:  # Determine if the ranges of motion intersect
+        # Determine whether the range of motion of the provers intersects, separated by two intervals, so the time has to be x2
         hasIntersact = findEllipse(int(SUserPre.speed * static.time * 2 * static.interval / 10), SUserBack.location,
-                                   SUserPre.location, UCircle)  # 判断证明者的运动范围是否有交集,中间隔了两个interval,所以时间要x2
+                                   SUserPre.location, UCircle)
         if hasIntersact:
             creditRate += 1
         else:
             creditRate = 0
-            assert "蓝牙连接失败"
+            assert "Error in Bluetooth connection"
 
         del SRecordPre
         del SUserPre
         del SRecordBack
         del SUserBack
-        # del SEllipse  #使用hasIntersact取代SEllipse
+        # del SEllipse
         gc.collect()
     creditRate /= static.userPerIter
 
-    resCR = 0  # 最终可信度
+    resCR = 0  # Final CR
     for u in selectedUser:
         resCR += iterate(u, creditRate, depth, time - static.interval)
 
@@ -88,8 +89,8 @@ def addSelectedUser(BTConnection, selectedUserList):
 
 
 def extraIter(uid, time):
-    Umap = readObj("../mapAnalog/map/map{}.pkl".format(time)).map  # 证明者所处时刻的地图
-    UuserList = readObj("../mapAnalog/map/map{}.pkl".format(time)).userList  # 证明者所处时刻的用户列表
+    Umap = readObj("../mapAnalog/map/map{}.pkl".format(time)).map  # Map of Applicant's moment in time
+    UuserList = readObj("../mapAnalog/map/map{}.pkl".format(time)).userList  # Map of Applicant's user list in time
     user = UuserList[uid - 1]
 
     BTConnection = findBTConnection(user.uid, user.location, Umap)
@@ -104,22 +105,22 @@ def extraIter(uid, time):
     del Umap
     # del BTConnection
     gc.collect()
-    sCreditIndex = 0  # 可信用户计数
+    sCreditIndex = 0  # Trusted User Count
     for s in selectedUser:
         sUser = UuserList[s - 1]
         sCredit = not (user.credit ^ sUser.credit)
         if sCredit == True:
             sCreditIndex += 1
     threshold = sCreditIndex / static.userPerIter
-    if threshold >= static.extraThreshold:  # true的人数多
+    if threshold >= static.extraThreshold:  #
         return True
     else:
         return False
 
 
-def iterate2(uid, depth, time, Auid, trueRes):  # 计算验证准确率
-    Umap = readObj("../mapAnalog/map/map{}.pkl".format(time)).map  # 证明者所处时刻的地图
-    UuserList = readObj("../mapAnalog/map/map{}.pkl".format(time)).userList  # 证明者所处时刻的用户列表
+def iterate2(uid, depth, time, Auid, trueRes):  # Calculate verification accuracy
+    Umap = readObj("../mapAnalog/map/map{}.pkl".format(time)).map
+    UuserList = readObj("../mapAnalog/map/map{}.pkl".format(time)).userList
     user = UuserList[uid - 1]
     if depth == static.Nround:
         Auser = UuserList[Auid - 1]
@@ -141,8 +142,8 @@ def iterate2(uid, depth, time, Auid, trueRes):  # 计算验证准确率
     # del BTConnection
     gc.collect()
 
-    sCreditIndex = 0  # 可信用户计数
-    sCreditDict = {}  # 记录每个用户是否可信
+    sCreditIndex = 0  # Trusted User Count
+    sCreditDict = {}  # Record whether each user is trustworthy
     for s in selectedUser:
         sUser = UuserList[s - 1]
         sCredit, _ = iterate2(s, depth, time, Auid, trueRes)
@@ -162,49 +163,12 @@ def iterate2(uid, depth, time, Auid, trueRes):  # 计算验证准确率
                 lock.release()
 
     threshold = sCreditIndex / min(static.userPerIter, userNum)
-    if threshold >= static.Threshold:  # true的人数多
+    if threshold >= static.Threshold:
         return True, trueRes
     else:
         return False, trueRes
 
-    # if len(selectedUser) == 0:
-    #     return "Detected"
-    # elif len(selectedUser) == 1:
-    #     if bool(sCreditIndex):
-    #         return "True"
-    #     else:
-    #         return "False"
-    # else:
-    #     if sCreditIndex == 0:
-    #         return "False"
-    #     if sCreditIndex == 1:
-    #         # 找到true，如果全部是false，返回false，否则返回detected
-    #         extraUID = -1  # 不正常用户的uid
-    #         for k, v in sCreditDict.items():
-    #             if v == "True":
-    #                 extraUID = k
-    #         extraBTConnection = findBTConnection(extraUID, user.location, Umap)
-    #         extraNum = len(extraBTConnection)
-    #         extraSelectedUser = []
-    #         if extraNum < module.userPerIter:
-    #             extraSelectedUser = extraBTConnection
-    #         else:
-    #             extraSelectedUser = np.random.choice(extraBTConnection, size=module.userPerIter, replace=False)
-    #         for s in extraSelectedUser:
-    #             extraWitness = UuserList[s - 1]
-    #             if extraWitness.credit == "True":
-    #                 return "Detected"
-    #         return "False"
-    #
-    #     if sCreditIndex == len(selectedUser) - 1:
-    #         # 找到false，如果全部是true，返回true，否则返回detected
-    #         extraUID = -1  # 不正常用户的uid
-    #         for k, v in sCreditDict.items():
-    #             if v == "False":
-    #                 extraUID = k
-    #         extraBTConnection = findBTConnection(extraUID, user.location, Umap)
-    #         extraNum = len(extraBTConnection)
-    #         extraSelectedUser = []
+    extraSelectedUser = []
     #         if extraNum < module.userPerIter:
     #             extraSelectedUser = extraBTConnection
     #         else:
@@ -225,7 +189,7 @@ def findBTConnection(uid, location, map):
     BTConnection = []
     for point in BTConnectionCircle:
         BTConnection.extend(map[point[0]][point[1]])
-    BTConnection.remove(uid)  # 去掉自己
+    BTConnection.remove(uid)
     return BTConnection
 
 
@@ -246,7 +210,7 @@ if __name__ == '__main__':
     time1 = time.perf_counter()
     userList = np.random.choice(np.arange(1, static.userNum + 1), size=static.EXPusernum, replace=False)
     pool = multiprocessing.Pool(static.cpu)
-    # CR实验
+    # CR Experiment
     # CRres = []
     # for i in userList:
     #     startTime = np.random.choice(np.arange(25, 75))
@@ -256,7 +220,7 @@ if __name__ == '__main__':
     # print("final res:{}".format(np.mean(CRres)))
     # np.save("Res/density-{}/res{}.npy".format(module.userPerIter, module.userNum), CRres)
 
-    # Credit实验
+    # Credit Experiment
     creditRes = []
     for i in userList:
         startTime = np.random.choice(np.arange(25, 75))
