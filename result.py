@@ -103,13 +103,10 @@ if __name__ == '__main__':
     misjugListSum = np.array(misjugListSum)
 
     # 折线图
+    # for ax, title, data in zip(axes, ["Accuracy", "Error Detection Rate", "Error Missing Rate", "Misjudgement Rate"],
+    #                            [accListSum, errdetListSum, errmisListSum, misjugListSum]):
 
-    plt.figure(figsize=(10,5))
-    ax1 = plt.subplot(121)
-    ax2 = plt.subplot(122)
 
-    axes = [ax1, ax2]
-    for ax, title, data in zip(axes, ["Accuracy", "Frame Rate"],
     plt.figure(figsize=(10,5))
     ax1 = plt.subplot(121)
     ax2 = plt.subplot(122)
@@ -139,15 +136,6 @@ if __name__ == '__main__':
             'size': 11,
         }
         ax.set_xlabel("Percentage of Cheaters", fontLabel)
-<<<<<<< HEAD
-        ax.set_ylabel("Value", fontLabel)
-        ax.set_xscale("log")
-        # ax.set_ylim(0.0,1.0)
-        ax.set_xticks(x)
-        ax.set_xticklabels(x, fontTick)
-        ax.set_yticks(y)
-        ax.set_yticklabels(y, fontTick)
-=======
         ax.set_ylabel(title, fontLabel)
         ax.set_xscale("log")
         # ax.set_ylim(0.0,1.0)
@@ -155,7 +143,6 @@ if __name__ == '__main__':
         ax.set_xticklabels(x, fontdict=fontTick)
         ax.set_yticks(y)
         ax.set_yticklabels(y, fontdict=fontTick)
->>>>>>> 10844747a626c184a9003c1874fdfb86835f3c5c
         # ax.yaxis.grid(True)
         ax.spines["top"].set_linewidth(1.5)
         ax.spines["bottom"].set_linewidth(1.5)
