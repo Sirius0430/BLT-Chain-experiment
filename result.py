@@ -102,7 +102,6 @@ if __name__ == '__main__':
     errmisListSum = np.array(errmisListSum)
     misjugListSum = np.array(misjugListSum)
 
-    # 折线图
     # for ax, title, data in zip(axes, ["Accuracy", "Error Detection Rate", "Error Missing Rate", "Misjudgement Rate"],
     #                            [accListSum, errdetListSum, errmisListSum, misjugListSum]):
 
@@ -154,7 +153,6 @@ if __name__ == '__main__':
     plt.savefig("fig/accLineChart.png",dpi=300)
     plt.show()
 
-    # 柱状图
     # fontTitle = {
     #     'family': 'Arial',
     #     'weight': 'normal',
