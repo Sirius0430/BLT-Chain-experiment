@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --partition=hpib     #申请分区 `hpxg` 的计算资源   
+#SBATCH --partition=hpib 
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --account=feiteng
