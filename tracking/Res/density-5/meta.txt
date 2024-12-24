@@ -1,13 +1,13 @@
-speed = [1, 5, 15]  # 行人，自行车，汽车 m/s,实际中一格=10m，需要除10(或规定10s记录一次）
-# speedPoss = [0.6 / 3, 0.6 / 3, 0.6 / 3, 0.4]  # 选择速度的可能性，用于控制有多少人正常移动
-oriPoss = [0.2, 0.2, 0.2, 0.2, 0.2]  # 选择前进方向时的可能性
-time = 60  # 每次迭代的间隔时间（单位s）
-mapSize = 1000  # 地图大小
-userNum = 100000  # 用户数量
-creditPoss=[1,0]    #真实用户与作弊用户分布
+speed = [1, 5, 15]
+# speedPoss = [0.6 / 3, 0.6 / 3, 0.6 / 3, 0.4]
+oriPoss = [0.2, 0.2, 0.2, 0.2, 0.2]
+time = 60）
+mapSize = 1000
+userNum = 100000
+creditPoss=[1,0]
 
-interval = 5  # 找人的间隔（几个time）
-bluetoothDistance = 50  # 蓝牙连接距离
-userPerIter = 5  # 每轮循环的验证人数
+interval = 5
+bluetoothDistance = 50
+userPerIter = 3
 
-cpu = 16  # 线程数
+cpu = 16
