@@ -1,13 +1,13 @@
 speed = [1, 5, 15]
 # speedPoss = [0.6 / 3, 0.6 / 3, 0.6 / 3, 0.4]
 oriPoss = [0.2, 0.2, 0.2, 0.2, 0.2]
-time = 60）
+time = 60
 mapSize = 1000
 userNum = 100000
 creditPoss=[1,0]
 
 interval = 5
 bluetoothDistance = 50
-userPerIter = 3
+userPerIter = 6
 
 cpu = 16
