@@ -47,7 +47,6 @@ if __name__ == '__main__':
 
     plt.figure(dpi=300)
 
-    # WN和CR合成一个指标
 
     ax = plt.subplot(1,1,1)
     wn = np.array([3, 4, 5, 6, 7]).reshape(5, 1)
@@ -69,7 +68,7 @@ if __name__ == '__main__':
 
 
 
-    # 总图
+    # Final figure
     # plt.figure(figsize=(15, 10))
     # ax = plt.subplot(2, 3, 1)
     # ax1 = plt.subplot(2, 3, 2)
@@ -78,17 +77,16 @@ if __name__ == '__main__':
     # ax4 = plt.subplot(2, 3, 5)
     # ax5 = plt.subplot(2, 3, 6)
 
-    # #折线图
     # colors = ['#264653', '#2a9d8e', '#e9c46b','#f3a261','#e66f51']
     # for (k,v),c in zip(means.items(),colors):
-    #     #拟合曲线图
+    #     # fit plot
     #     # f = np.polyfit(x, v, 3)
     #     # x2 = np.linspace(0, 2000, 2001, endpoint=True)
     #     # p = np.poly1d(f)
     #     # y2 = p(x2)
     #     # ax.plot(x2,y2,label="Witness = "+k,linewidth=2)
     #
-    #     #折线图
+    #     # line 
     #     ax.plot(x,v,label="WN = "+k,linewidth=2,color = c)
     # ax.set_xlabel("Population Density (persons/km2)",fontLabel)
     # ax.set_ylabel("CR",fontLabel)
@@ -101,7 +99,7 @@ if __name__ == '__main__':
     # ax.legend(loc="lower right", prop={"size": 13})
     # ax.set_title("")
     #
-    # # 箱线图
+    # # box plot
     # axes = [ax1,ax2,ax3,ax4,ax5]
     # for ax,WN in zip(axes,range(3,8)):
     #     WN = str(WN)
@@ -117,7 +115,7 @@ if __name__ == '__main__':
     #                     meanprops={"linewidth":1.5,"color":"#1f77b4"})
     #     ax.plot(range(1, 7), means[WN], label="Mean", linewidth=2,zorder=2)
     #     ax.plot(range(1, 7), medians[WN], label="Median", linewidth=2,zorder=2)
-    #     # 颜色填充
+    #     # color
     #     boxcolors = ['#4eab90A0', '#8eb69cA0', '#edddc3A0', '#eebf6dA0', '#d94f33A0', '#834026A0']
     #     colors = ['#4eab90', '#8eb69c', '#edddc3', '#eebf6d', '#d94f33', '#834026']
     #     for patch, boxcolor,color in zip(bp['boxes'], boxcolors,colors):
